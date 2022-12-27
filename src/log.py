@@ -4,7 +4,6 @@ import logging.handlers
 
 
 class CustomFormatter(logging.Formatter):
-
     LEVEL_COLORS = [
         (logging.DEBUG, '\x1b[40;1m'),
         (logging.INFO, '\x1b[34;1m'),
@@ -37,7 +36,7 @@ class CustomFormatter(logging.Formatter):
         return output
 
 
-def setup_logger(module_name:str) -> logging.Logger:
+def setup_logger(module_name: str) -> logging.Logger:
     # create logger
     library, _, _ = module_name.partition('.py')
     logger = logging.getLogger(library)
@@ -46,9 +45,9 @@ def setup_logger(module_name:str) -> logging.Logger:
     console_handler = logging.StreamHandler()
     console_handler.setLevel(logging.INFO)
     console_handler.setFormatter(CustomFormatter())
-     # specify that the log file path is the same as `main.py` file path
+    # specify that the log file path is the same as `main.py` file path
     grandparent_dir = os.path.abspath(__file__ + "/../../")
-    log_name='chatgpt_discord_bot.log'
+    log_name = 'chatgpt_discord_bot.log'
     log_path = os.path.join(grandparent_dir, log_name)
     # create local log handler
     log_handler = logging.handlers.RotatingFileHandler(

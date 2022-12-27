@@ -24,7 +24,8 @@ async def send_message(message, user_message):
             str(message.user.id) + '>\n\n'
         response = f"{response}{user_message}{await responses.handle_response(user_message)}"
         if len(response) > 1900:
-            # Split the response into smaller chunks of no more than 1900 characters each(Discord limit is 2000 per chunk)
+            # Split the response into smaller chunks of no more than 1900 characters each(Discord limit is 2000 per
+            # chunk)
             if "```" in response:
                 # Split the response if the code block exists
                 parts = response.split("```")
@@ -41,7 +42,7 @@ async def send_message(message, user_message):
                     formatted_code_block += line + "\n"  # Add the line and seperate with new line
 
                 # Send the code block in a separate message
-                if (len(formatted_code_block) > 2000):
+                if len(formatted_code_block) > 2000:
                     code_block_chunks = [formatted_code_block[i:i+1900]
                                          for i in range(0, len(formatted_code_block), 1900)]
                     for chunk in code_block_chunks:
@@ -78,7 +79,7 @@ async def send_start_prompt(client):
                 prompt = f.read()
                 logger.info(f"Send starting prompt with size {len(prompt)}")
                 responseMessage = await responses.handle_response(prompt)
-                if (config['discord_channel_id']):
+                if config['discord_channel_id']:
                     channel = client.get_channel(int(config['discord_channel_id']))
                     await channel.send(responseMessage)
             logger.info(f"Starting prompt response:{responseMessage}")
@@ -115,10 +116,12 @@ def run_discord_bot():
         if not isPrivate:
             isPrivate = not isPrivate
             logger.warning("\x1b[31mSwitch to private mode\x1b[0m")
-            await interaction.followup.send("> **Info: Next, the response will be sent via private message. If you want to switch back to public mode, use `/public`**")
+            await interaction.followup.send("> **Info: Next, the response will be sent via private message. If you "
+                                            "want to switch back to public mode, use `/public`**")
         else:
             logger.info("You already on private mode!")
-            await interaction.followup.send("> **Warn: You already on private mode. If you want to switch to public mode, use `/public`**")
+            await interaction.followup.send("> **Warn: You already on private mode. If you want to switch to public "
+                                            "mode, use `/public`**")
 
     @client.tree.command(name="public", description="Toggle public access")
     async def public(interaction: discord.Interaction):
@@ -126,16 +129,20 @@ def run_discord_bot():
         await interaction.response.defer(ephemeral=False)
         if isPrivate:
             isPrivate = not isPrivate
-            await interaction.followup.send("> **Info: Next, the response will be sent to the channel directly. If you want to switch back to private mode, use `/private`**")
+            await interaction.followup.send("> **Info: Next, the response will be sent to the channel directly. If "
+                                            "you want to switch back to private mode, use `/private`**")
             logger.warning("\x1b[31mSwitch to public mode\x1b[0m")
         else:
-            await interaction.followup.send("> **Warn: You already on public mode. If you want to switch to private mode, use `/private`**")
+            await interaction.followup.send("> **Warn: You already on public mode. If you want to switch to private "
+                                            "mode, use `/private`**")
             logger.info("You already on public mode!")
 
     @client.tree.command(name="help", description="Show help for the bot")
-    async def help(interaction: discord.Interaction):
+    async def helpcmd(interaction: discord.Interaction):
         await interaction.response.defer(ephemeral=False)
-        await interaction.followup.send(":star:**BASIC COMMANDS** \n    `/chat [message]` Chat with ChatGPT!\n    `/public` ChatGPT switch to public mode \n    For complete documentation, please visit https://github.com/Zero6992/chatGPT-discord-bot")
+        await interaction.followup.send(":star:**BASIC COMMANDS** \n    `/chat [message]` Chat with ChatGPT!\n    "
+                                        "`/public` ChatGPT switch to public mode \n    For complete documentation, "
+                                        "please visit https://github.com/Zero6992/chatGPT-discord-bot")
         logger.info(
             "\x1b[31mSomeone need help!\x1b[0m")
 

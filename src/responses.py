@@ -11,12 +11,13 @@ def get_config() -> dict:
     config_path = os.path.join(config_dir, config_name)
 
     with open(config_path, 'r') as f:
-        config = json.load(f)
+        cfg = json.load(f)
+    return cfg
 
-    return config
 
 config = get_config()
 openai.api_key = config['openAI_key']
+
 
 async def handle_response(message) -> str:
     response = await sync_to_async(openai.Completion.create)(
